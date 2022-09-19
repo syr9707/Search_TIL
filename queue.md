@@ -12,6 +12,13 @@
 >
 > 원소 뺴냄 : poll(), remove()
 
+|  | 예외 발생 | 값 리턴 |
+| --- | --- | --- |
+| 추가 | add | offer |
+| 삭제 | remove | poll |
+| 검사 | element | peek |
+
+
 ```java
 import java.util.*;
 
@@ -50,5 +57,46 @@ import java.util.*;
 	// 출력 - Queue : [25, 99]
 ```
 
-
+### ● 좌표는 설정하기 나름 : x, y 잘 설정하기
+```java
+// 백준 1012 배추 : BFS 
+public static void bfs(int startX, int startY) {
+		Queue<int[]> queue = new LinkedList<>();
+		// bfs에서 queue의 역할은 다음 탐색할 좌표를 미리 저장해 놓는 것이다. 
+		// bfs 1번 실행될 때마다 인접한 곳을 모두 탐색하고 종료되니 bfs 안에 queue를 선언했다. 
+		
+		queue.add(new int[] {startX, startY}); // x, y 좌표 저장
+		
+		check[startX][startY] = true; // 시작좌표엔 배추가 있으니 미리 true로 처리해준다. 
+		
+		// 배추가 상하좌우에 인접하면 이동할 수 있다. 
+		// 현재좌표에서 상하좌우 움직이는 좌표를 지정한다. 
+		int[] X = {0, 0, -1, 1};
+		int[] Y = {-1, 1, 0, 0};
+		
+		// queue가 비어있으면 더이상 인접한 배추가 없다는 뜻이다. 
+		while(!queue.isEmpty()) {
+			int[] poll = queue.poll(); // 저장된 queue를 꺼낸다. 
+			
+			// 상하좌우 4가지 방법이니 for문 4번 반복
+			for(int i = 0; i < 4; i++) {
+				// 상하좌우 좌표 조정
+				int x = poll[0] + X[i];
+				int y = poll[1] + Y[i];
+				
+				// 좌표가 배추밭을 벗어나게되면 다음 좌표를 체크해야 한다. 
+				if(x < 0 || x >= M || y < 0 || y >= N) {
+					continue;
+				}
+				
+				// 상하좌우 움직인 좌표에 배추가 있고, 체크하지 않은 좌표이면
+				if(arr[x][y] == 1 && !check[x][y]) {
+					queue.add(new int[] {x, y}); // 좌표를 저장한다.
+					check[x][y] = true; // 체크한다.
+				}
+			}
+		}
+		
+	}
+```
 
